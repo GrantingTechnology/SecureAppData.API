@@ -1,10 +1,10 @@
-﻿
 using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+//using ...add here the business namespace for the user interface
 
-namespace community.secure.validation
+namespace gt.community.secure
 {
     public partial class SecureAccess : ActionFilterAttribute
     {
@@ -36,10 +36,8 @@ namespace community.secure.validation
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
             try
             {
-
                 if (!isticketValid())
                 {
                     HttpContext.Current.Response.Redirect("/Login");
@@ -51,7 +49,7 @@ namespace community.secure.validation
             catch (Exception e)
             {
 
-                Register.Log(this, string.Format("*secureAccess - OnActionExecuting[1:{0} 2:{1} 3:{2}]", e.Message, e.Source, e.StackTrace));
+                Register.Log(this, ref e);
             }
 
         }
@@ -62,7 +60,6 @@ namespace community.secure.validation
         /// <returns>Object type: Bollean</returns>
         private bool isticketValid()
         {
-
             try
             {
                 if (!isPermition())
@@ -76,7 +73,7 @@ namespace community.secure.validation
             }
             catch (Exception e)
             {
-                Register.Log(this, string.Format("*secureAccess - isticketvalid [1:{0} 2:{1} 3:{2}]", e.Message, e.Source, e.StackTrace));
+                Register.Log(this, ref e);
             }
             return false;
         }
@@ -94,14 +91,12 @@ namespace community.secure.validation
         /// <returns></returns>
         private bool Access()
         {
-
             try
             {
                 _ipUser = Settings.ClientAccess;
 
                 if (Settings.IPDefault.Contains(_ipUser))
                 {
-
                     return verify.isDateToday();
                 }
 
@@ -117,7 +112,7 @@ namespace community.secure.validation
 
 
 
-namespace community.secure.http
+namespace gt.community.secure.http
 {
     using System;
     using System.Net;
